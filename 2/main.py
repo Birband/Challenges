@@ -4,7 +4,14 @@ import numpy as np
 
 INPUT_FOLDER = pathlib.Path("INPUT")
 OUTPUT_FOLDER = pathlib.Path("OUTPUT")
-CHUNK_SIZE = 8
+CHUNK_SIZE = 3
+
+METHODS = {
+    "average": np.mean,
+    "median": np.median,
+    "max": np.max,
+    "min": np.min
+}
 
 def initialize_directories() -> None:
     INPUT_FOLDER.mkdir(exist_ok=True)
@@ -24,12 +31,12 @@ def prepare_image(image : Image) -> np.ndarray:
     image_array = np.array(image)
     return image_array
 
-def process_image(image_array : np.ndarray, filename: str = "output.jpg") -> np.ndarray:
+def process_image(image_array : np.ndarray, method: str = "average", filename: str = "example.jpg") -> None:
     for i in range(0, image_array.shape[0], CHUNK_SIZE):
         for j in range(0, image_array.shape[1], CHUNK_SIZE):
             chunk = image_array[i:i+CHUNK_SIZE, j:j+CHUNK_SIZE]
-            average_color = np.mean(chunk, axis=(0, 1))
-            image_array[i:i+CHUNK_SIZE, j:j+CHUNK_SIZE] = average_color
+            color = [METHODS[method](chunk[:,:,k]) for k in range(3)]
+            image_array[i:i+CHUNK_SIZE, j:j+CHUNK_SIZE] = color
                 
     new_image = Image.fromarray(image_array)
     new_image.save(OUTPUT_FOLDER / filename)
@@ -37,11 +44,11 @@ def process_image(image_array : np.ndarray, filename: str = "output.jpg") -> np.
 def main():
     initialize_directories()
 
-    file_name = "example.jpg"
+    file_name = "test.jpg"
 
     image = prepare_image(load_image(file_name))
 
-    process_image(image, file_name)
+    process_image(image, "median", file_name)
 
     print("Done!")
     
