@@ -1,2 +1,5 @@
 INPUT/
 OUTPUT/
+
+venv/
+__pycache__/
