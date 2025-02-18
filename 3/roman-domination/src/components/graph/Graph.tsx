@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
+// @ts-ignore
 import Graph  from "react-vis-network-graph";
 import { v4 as uuidv4 } from "uuid";
 import './Graph.css';
