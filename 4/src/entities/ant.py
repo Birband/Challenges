@@ -27,7 +27,7 @@ class Ant:
     def distance_to_destination(self, node: Node):
         return ((self.x - node.x) ** 2 + (self.y - node.y) ** 2) ** 0.5
 
-    def restart(self, pheromones: dict = None):
+    def restart(self, pheromones: dict|None = None):
         self.node = self.nodes[0]
         self.x = self.node.x
         self.y = self.node.y
